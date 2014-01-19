@@ -1,0 +1,223 @@
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: "Times New Roman", Times, serif;
+  padding-bottom: 3em;
+  margin: 0 auto;
+  width: 960px;
+  color: #666;
+}
+
+header {
+  position: relative;
+}
+
+header nav {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+header nav ul {
+  margin: 50px 0 0;
+}
+
+header nav li {
+  list-style-type: circle;
+  padding: 8px;
+}
+
+header nav li.current {
+  list-style-type: disc;
+}
+
+header nav a {
+  text-decoration: none;
+  color: #666;
+}
+
+.hidden {
+  display: none;
+}
+
+.errors, .success {
+  padding: 0.8em;
+  margin-bottom: 1em;
+  border: 2px solid #ddd;
+}
+
+.errors {
+  background: #fbe3e4;
+  color: #8a1f11;
+  border-color: #fbc2c4;
+  list-style: none;
+}
+
+.success {
+  background: #e6efc2;
+  color: #264409;
+  border-color: #c6d880;
+}
+
+.gallery-index nav {
+  position: relative;
+  height: 500px;
+}
+
+.gallery-index ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gallery-index li {
+  position: absolute;
+}
+
+.gallery-index a {
+  display: block;
+  height: 100%;
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.gallery-index .weather {
+  background: transparent url(images/gallery/weather.jpg) no-repeat 0 0;
+}
+
+.gallery-index .birds {
+  background: transparent url(images/gallery/birds.jpg) no-repeat 0 0;
+}
+
+.gallery-index .peace-doves {
+  background: transparent url(images/gallery/peace-doves.jpg) no-repeat 0 0;
+}
+
+.gallery-index .commissions {
+  background: transparent url(images/gallery/commissions.jpg) no-repeat 0 0;
+}
+
+.gallery-index .branches {
+  background: transparent url(images/gallery/branches.jpg) no-repeat 0 0;
+}
+
+.gallery-index .woodlands {
+  background: transparent url(images/gallery/woodlands.jpg) no-repeat 0 0;
+}
+
+.gallery-index .peace-doves {
+  left: 150px;
+  top: 20px;
+  width: 175px;
+  height: 182px;
+}
+
+.gallery-index .weather {
+  top: -100px;
+  left: 450px;
+  width: 175px;
+  height: 123px;
+}
+
+.gallery-index .birds {
+  top: -30px;
+  right: 50px;
+  width: 175px;
+  height: 153px;
+}
+
+.gallery-index .commissions {
+  bottom: 0;
+  left: 0;
+  width: 275px;
+  height: 167px;
+}
+
+.gallery-index .branches {
+  bottom: 0;
+  left: 370px;
+  width: 175px;
+  height: 145px;
+}
+
+.gallery-index .woodlands {
+  bottom: 70px;
+  right: 0;
+  width: 400px;
+  height: 272px;
+}
+
+.gallery.show ul {
+  width: 516px;
+  margin: 0 auto;
+  list-style: none;
+}
+
+.gallery.show p {
+  float: left;
+  width: 200px;
+}
+
+.jewellery-piece {
+  clear: both;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.jewellery-piece img {
+  float: right;
+}
+
+.news-items {
+  width: 620px;
+  margin: 0 auto;
+  list-style: none;
+}
+
+.news-items .category-name {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  height: 47px;
+}
+
+.news-items .stockists .category-name {
+  background: transparent url(images/stockists_header.jpg) no-repeat right top;
+}
+
+.news-items .events-and-exhibitions .category-name {
+  background: transparent url(images/events_and_exhibitions_header.jpg) no-repeat right top;
+}
+
+.news-items .awards .category-name {
+  background: transparent url(images/awards_header.jpg) no-repeat right top;
+}
+
+.news-items .press .category-name {
+  background: transparent url(images/press_header.jpg) no-repeat right top;
+}
+
+.about {
+  width: 460px;
+}
+
+.admin .sign-out {
+  width: 620px;
+  margin: 0 auto;
+  padding-left: 40px;
+}
+
+.contact {
+  position: relative;
+}
+
+.contact img {
+  float: left;
+  margin-top: -100px;
+  margin-left: 115px;
+}
+
+.contact p {
+  padding-right: 35px;
+}

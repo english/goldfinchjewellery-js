@@ -1,0 +1,12 @@
+{
+  "test_page": "index.html",
+  "launch_in_dev": [
+    "chrome",
+    "phantomjs"
+  ],
+  "src_files": [
+    "index.html",
+    "test.js",
+    "app.js"
+  ]
+}
