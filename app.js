@@ -1,15 +1,13 @@
 function setup() {
-  renderer('');
+  window.location.hash = 'about';
 }
 
 function titleFor(route) {
-  return menuLinkFromRoute(route).innerText +
+  return menuLinkFromRoute(leadingPath(route)).innerText +
     ' - Lucy Ramsbottom, Jewellery Designer Maker';
 }
 
 function menuLinkFromRoute(route) {
-  if (route === '') route = '#';
-
   return find(menu().getElementsByTagName('a'), function(link) {
     return link.getAttribute('href') === route;
   });
@@ -27,17 +25,22 @@ function mainElement() {
 }
 
 function template(route) {
-  if (route === '') route = '#about';
   var templateId = removeHash(route) + '-template';
   var template = document.getElementById(templateId).cloneNode(true);
+
   removeClass([template], 'hidden');
 
   return template;
 }
 
+function leadingPath(route) {
+  return first(route.split('/'));
+}
+
 function setTitleImage(route) {
-  if (route === '') route = '#about';
-  document.getElementById('title-image').src = 'images/' + removeHash(route) + '.jpg';
+  var imageName = removeHash(leadingPath(route));
+
+  document.getElementById('title-image').src = 'images/' + imageName + '.jpg';
 }
 
 function menu() {
@@ -51,7 +54,7 @@ function menuItem(route) {
 function setCurrent(route) {
   var current = menu().getElementsByClassName('current');
   removeClass(current, 'current');
-  addClass(menuItem(route), 'current');
+  addClass(menuItem(leadingPath(route)), 'current');
 }
 
 function setContent(content) {

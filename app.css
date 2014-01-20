@@ -148,13 +148,13 @@ header nav a {
   height: 272px;
 }
 
-.gallery.show ul {
+.gallery-items {
   width: 516px;
   margin: 0 auto;
   list-style: none;
 }
 
-.gallery.show p {
+.gallery-items p {
   float: left;
   width: 200px;
 }

@@ -62,16 +62,12 @@
       }, done);
     });
 
-    it('is routed with #', function(done) {
-      menuItem('Contact').click();
+    it('is routed with #about', function(done) {
+      window.location.hash = 'about';
 
-      setTimeout(function() {
-        window.location.hash = '';
-
-        async(function() {
-          pageContent().innerText.should.contain('Having gained');
-        }, done);
-      }, 5);
+      async(function() {
+        pageContent().innerText.should.contain('Having gained');
+      }, done);
     });
   });
 
@@ -104,6 +100,25 @@
       async(function() {
         pageContent().innerText.should.contain('Peace Doves');
       }, done);
+    });
+
+    function galleryItem(gallery) {
+      return Array.prototype.filter.call(pageContent().getElementsByTagName('a'), function(link) {
+        return link.innerText === gallery;
+      })[0];
+    }
+
+    describe('peace doves', function() {
+      it('has content', function(done) {
+        menuItem('Gallery').click();
+
+        setTimeout(function() {
+          galleryItem('Peace Doves').click();
+          async(function() {
+            pageContent().innerText.should.contain('Sterling silver ring with paper and resin.');
+          }, done);
+        }, 5);
+      });
     });
   });
 
