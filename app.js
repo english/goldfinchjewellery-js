@@ -13,11 +13,11 @@ function menuLinkFromRoute(route) {
   });
 }
 
-function renderer(route) {
-  document.title = titleFor(route);
-  setContent(template(route));
-  setCurrent(route);
-  setTitleImage(route);
+function route(path) {
+  document.title = titleFor(path);
+  setContent(template(path));
+  setCurrent(path);
+  setTitleImage(path);
 }
 
 function mainElement() {
@@ -26,11 +26,11 @@ function mainElement() {
 
 function template(route) {
   var templateId = removeHash(route) + '-template';
-  var template = document.getElementById(templateId).cloneNode(true);
+  var node = document.getElementById(templateId).cloneNode(true);
 
-  removeClass([template], 'hidden');
+  removeClass([node], 'hidden');
 
-  return template;
+  return node;
 }
 
 function leadingPath(route) {
@@ -44,7 +44,7 @@ function setTitleImage(route) {
 }
 
 function menu() {
-  return document.getElementById('menu')
+  return document.getElementById('menu');
 }
 
 function menuItem(route) {
@@ -115,7 +115,7 @@ function removeHash(string) {
 }
 
 window.onhashchange = function() {
-  renderer(window.location.hash);
+  route(window.location.hash);
 };
 
 setup();

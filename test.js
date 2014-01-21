@@ -95,7 +95,7 @@
     });
 
     it('is routed with #gallery', function(done) {
-      window.location.hash = 'gallery'
+      window.location.hash = 'gallery';
 
       async(function() {
         pageContent().innerText.should.contain('Peace Doves');
