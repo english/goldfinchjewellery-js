@@ -101,7 +101,9 @@
         pageContent().innerText.should.contain('Peace Doves');
       }, done);
     });
+  });
 
+  describe('galleries', function() {
     function galleryItem(gallery) {
       return Array.prototype.filter.call(pageContent().getElementsByTagName('a'), function(link) {
         return link.innerText === gallery;
@@ -109,15 +111,134 @@
     }
 
     describe('peace doves', function() {
-      it('has content', function(done) {
+      it('can be navigated to', function(done) {
         menuItem('Gallery').click();
 
         setTimeout(function() {
           galleryItem('Peace Doves').click();
+
           async(function() {
             pageContent().innerText.should.contain('Sterling silver ring with paper and resin.');
           }, done);
-        }, 5);
+        }, 0);
+      });
+
+      it('lives on #gallery/peace-doves', function(done) {
+        document.location.hash = 'gallery/peace-doves';
+
+        async(function() {
+          pageContent().innerText.should.contain('Sterling silver ring with paper and resin.');
+        }, done);
+      });
+    });
+
+    describe('weather', function() {
+      it('can be navigated to', function(done) {
+        menuItem('Gallery').click();
+
+        setTimeout(function() {
+          galleryItem('Weather').click();
+
+          async(function() {
+            pageContent().innerText.should.contain('');
+          }, done);
+        }, 0);
+      });
+
+      it('lives on #gallery/peace-doves', function(done) {
+        document.location.hash = 'gallery/weather';
+
+        async(function() {
+          pageContent().innerText.should.contain('Oxidised silver and oval Labradorite cloud pendant.');
+        }, done);
+      });
+    });
+
+    describe('birds', function() {
+      it('can be navigated to', function(done) {
+        menuItem('Gallery').click();
+
+        setTimeout(function() {
+          galleryItem('Birds').click();
+
+          async(function() {
+            pageContent().innerText.should.contain('Round Peridot and fine silver earrings.');
+          }, done);
+        }, 0);
+      });
+
+      it('lives on #gallery/birds', function(done) {
+        document.location.hash = 'gallery/birds';
+
+        async(function() {
+          pageContent().innerText.should.contain('Round Peridot and fine silver earrings.');
+        }, done);
+      });
+    });
+
+    describe('commissions', function() {
+      it('can be navigated to', function(done) {
+        menuItem('Gallery').click();
+
+        setTimeout(function() {
+          galleryItem('Commissions').click();
+
+          async(function() {
+            pageContent().innerText.should.contain('Diamond and recycled 18ct yellow gold ring.');
+          }, done);
+        }, 0);
+      });
+
+      it('lives on #gallery/commissions', function(done) {
+        document.location.hash = 'gallery/commissions';
+
+        async(function() {
+          pageContent().innerText.should.contain('Diamond and recycled 18ct yellow gold ring.');
+        }, done);
+      });
+    });
+
+    describe('branches', function() {
+      it('can be navigated to', function(done) {
+        menuItem('Gallery').click();
+
+        setTimeout(function() {
+          galleryItem('Branches').click();
+
+          async(function() {
+            pageContent().innerText.should.contain('Sterling silver, wood, resin and suede brooch.');
+          }, done);
+        }, 0);
+      });
+
+      it('lives on #gallery/branches', function(done) {
+        document.location.hash = 'gallery/branches';
+
+        async(function() {
+          pageContent().innerText.should.contain('Sterling silver, wood, resin and suede brooch.');
+        }, done);
+      });
+    });
+
+    describe('woodlands', function() {
+      it('can be navigated to', function(done) {
+        menuItem('Gallery').click();
+
+        setTimeout(function() {
+          galleryItem('Woodlands').click();
+
+          async(function() {
+            pageContent().innerText.should.contain('Silver acorn pendant.');
+          }, done);
+        }, 0);
+      });
+
+      it('lives on #gallery/woodlands', function(done) {
+        document.location.hash = 'gallery/woodlands';
+
+        async(function() {
+          pageContent().innerText.should.contain('Silver acorn pendant.');
+        }, done);
       });
     });
   });
