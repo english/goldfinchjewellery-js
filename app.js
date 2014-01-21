@@ -1,121 +1,139 @@
-function setup() {
-  window.location.hash = 'about';
-}
+;(function() {
+  function setup() {
+    if (window.location.hash) {
+      route(window.location.hash);
+    } else {
+      window.location.hash = 'about';
+    }
+  }
 
-function titleFor(route) {
-  return menuLinkFromRoute(leadingPath(route)).innerText +
-    ' - Lucy Ramsbottom, Jewellery Designer Maker';
-}
+  function titleFor(route) {
+    return menuLinkFromRoute(leadingPath(route)).innerText +
+      ' - Lucy Ramsbottom, Jewellery Designer Maker';
+  }
 
-function menuLinkFromRoute(route) {
-  return find(menu().getElementsByTagName('a'), function(link) {
-    return link.getAttribute('href') === route;
-  });
-}
+  function menuLinkFromRoute(route) {
+    return find(menu().getElementsByTagName('a'), function(link) {
+      return link.getAttribute('href') === route;
+    });
+  }
 
-function route(path) {
-  document.title = titleFor(path);
-  setContent(template(path));
-  setCurrent(path);
-  setTitleImage(path);
-}
+  function route(path) {
+    if (routeExists(path)) {
+      document.title = titleFor(path);
+      setContent(template(path));
+      setCurrent(path);
+      setTitleImage(path);
+    } else {
+      window.location.hash = 'about';
+    }
+  }
 
-function mainElement() {
-  return document.getElementById('main');
-}
+  function mainElement() {
+    return document.getElementById('main');
+  }
 
-function template(route) {
-  var templateId = removeHash(route) + '-template';
-  var node = document.getElementById(templateId).cloneNode(true);
+  function routeExists(path) {
+    return templateElement(path) !== null;
+  }
 
-  removeClass([node], 'hidden');
+  function template(route) {
+    var node = templateElement(route).cloneNode(true);
 
-  return node;
-}
+    removeClass([node], 'hidden');
 
-function leadingPath(route) {
-  return first(route.split('/'));
-}
+    return node;
+  }
 
-function setTitleImage(route) {
-  var imageName = removeHash(leadingPath(route));
+  function templateElement(path) {
+    var templateId = removeHash(path) + '-template';
+    return document.getElementById(templateId);
+  }
 
-  document.getElementById('title-image').src = 'images/' + imageName + '.jpg';
-}
+  function leadingPath(route) {
+    return first(route.split('/'));
+  }
 
-function menu() {
-  return document.getElementById('menu');
-}
+  function setTitleImage(route) {
+    var imageName = removeHash(leadingPath(route));
 
-function menuItem(route) {
-  return menuLinkFromRoute(route).parentNode;
-}
+    document.getElementById('title-image').src = 'images/' + imageName + '.jpg';
+  }
 
-function setCurrent(route) {
-  var current = menu().getElementsByClassName('current');
-  removeClass(current, 'current');
-  addClass(menuItem(leadingPath(route)), 'current');
-}
+  function menu() {
+    return document.getElementById('menu');
+  }
 
-function setContent(content) {
-  mainElement().innerHTML = '';
-  mainElement().appendChild(content);
-}
+  function menuItem(route) {
+    return menuLinkFromRoute(route).parentNode;
+  }
 
-function cloneElement(element) {
-  return element.cloneNode(true);
-}
+  function setCurrent(route) {
+    var current = menu().getElementsByClassName('current');
+    removeClass(current, 'current');
+    addClass(menuItem(leadingPath(route)), 'current');
+  }
 
-function find(links, predicate) {
-  return first(Array.prototype.filter.call(links, predicate));
-}
+  function setContent(content) {
+    mainElement().innerHTML = '';
+    mainElement().appendChild(content);
+  }
 
-function pageLink(route) {
-  var links = menu().getElementsByTagName('a');
+  function cloneElement(element) {
+    return element.cloneNode(true);
+  }
 
-  return find(links, function(link) {
-    return link.innerText === page;
-  });
-}
+  function find(links, predicate) {
+    return first(Array.prototype.filter.call(links, predicate));
+  }
 
-function pages() {
-  return map(menu().getElementsByTagName('a'), function(link) {
-    return link.innerText;
-  });
-}
+  function pageLink(route) {
+    var links = menu().getElementsByTagName('a');
 
-function addClass(element, className) {
-  element.className += 'current';
-}
+    return find(links, function(link) {
+      return link.innerText === page;
+    });
+  }
 
-function removeClass(elements, className) {
-  each(elements, function(element) {
-    element.className = element.className.replace(className, '');
-  });
-}
+  function pages() {
+    return map(menu().getElementsByTagName('a'), function(link) {
+      return link.innerText;
+    });
+  }
 
-function first(arr) {
-  return arr[0];
-}
+  function addClass(element, className) {
+    element.className += 'current';
+  }
 
-function each(seq, fn) {
-  Array.prototype.forEach.call(seq, fn);
-}
+  function removeClass(elements, className) {
+    each(elements, function(element) {
+      element.className = element.className.replace(className, '');
+    });
+  }
 
-function map(seq, fn) {
-  return Array.prototype.map.call(seq, fn);
-}
+  function first(arr) {
+    return arr[0];
+  }
 
-function upperCaseFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+  function each(seq, fn) {
+    Array.prototype.forEach.call(seq, fn);
+  }
 
-function removeHash(string) {
-  return string.replace('#', '');
-}
+  function map(seq, fn) {
+    return Array.prototype.map.call(seq, fn);
+  }
 
-window.onhashchange = function() {
-  route(window.location.hash);
-};
+  function upperCaseFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
-setup();
+  function removeHash(string) {
+    return string.replace('#', '');
+  }
+
+  window.onhashchange = function() {
+    route(window.location.hash);
+  };
+
+  setup();
+})();

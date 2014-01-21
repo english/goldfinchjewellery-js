@@ -35,7 +35,6 @@
 
   beforeEach(function(done) {
     menuItem('About').click();
-
     setTimeout(done, 0);
   });
 
