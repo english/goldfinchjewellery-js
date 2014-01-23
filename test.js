@@ -1,20 +1,18 @@
 ;(function() {
-  if (window._phantom && !HTMLElement.prototype.click) {
-    HTMLElement.prototype.click = function() {
-      var ev = document.createEvent('MouseEvent');
-      ev.initMouseEvent(
-        'click', true, true,
-        window, null,
-        0, 0, 0, 0,
-        false, false, false, false,
-        0, null
-      );
-      this.dispatchEvent(ev);
-    };
-  }
-
   mocha.setup('bdd');
   chai.should();
+
+  function click(element) {
+    var ev = document.createEvent('MouseEvent');
+    ev.initMouseEvent(
+      'click', true, true,
+      window, null,
+      0, 0, 0, 0,
+      false, false, false, false,
+      0, null
+    );
+    element.dispatchEvent(ev);
+  }
 
   function menuItem(page) {
     return Array.prototype.filter.call(document.getElementById('menu').getElementsByTagName('a'), function(link) {
@@ -26,6 +24,10 @@
     return document.getElementById('main');
   }
 
+  function pageText() {
+    return pageContent().innerText;
+  }
+
   function async(fn, done) {
     setTimeout(function() {
       fn();
@@ -34,27 +36,27 @@
   }
 
   beforeEach(function(done) {
-    menuItem('About').click();
+    click(menuItem('About'));
     setTimeout(done, 0);
   });
 
   describe('about', function() {
     it('is shown by default', function() {
-      pageContent().innerText.should.contain('Having gained');
+      pageText().should.contain('Having gained');
       menuItem('About').parentNode.className.should.include('current');
     });
 
     it('has a menu link', function(done) {
-      menuItem('About').click();
+      click(menuItem('About'));
 
       async(function() {
-        pageContent().innerText.should.contain('Having gained');
+        pageText().should.contain('Having gained');
         menuItem('About').parentNode.className.should.include('current');
       }, done);
     });
 
     it('has a title image', function(done) {
-      menuItem('About').click();
+      click(menuItem('About'));
 
       async(function() {
         document.getElementById('title-image').src.should.include('about');
@@ -65,28 +67,28 @@
       window.location.hash = 'about';
 
       async(function() {
-        pageContent().innerText.should.contain('Having gained');
+        pageText().should.contain('Having gained');
       }, done);
     });
   });
 
   describe('gallery', function() {
     it('is hidden by default', function() {
-      pageContent().innerText.should.not.contain('Peace Doves');
+      pageText().should.not.contain('Peace Doves');
       menuItem('Gallery').parentNode.className.should.not.include('current');
     });
 
     it('has a menu link', function(done) {
-      menuItem('Gallery').click();
+      click(menuItem('Gallery'));
 
       async(function() {
-        pageContent().innerText.should.contain('Peace Doves');
+        pageText().should.contain('Peace Doves');
         menuItem('Gallery').parentNode.className.should.include('current');
       }, done);
     });
 
     it('has a title image', function(done) {
-      menuItem('Gallery').click();
+      click(menuItem('Gallery'));
 
       async(function() {
         document.getElementById('title-image').src.should.include('gallery');
@@ -97,7 +99,7 @@
       window.location.hash = 'gallery';
 
       async(function() {
-        pageContent().innerText.should.contain('Peace Doves');
+        pageText().should.contain('Peace Doves');
       }, done);
     });
   });
@@ -111,13 +113,13 @@
 
     describe('peace doves', function() {
       it('can be navigated to', function(done) {
-        menuItem('Gallery').click();
+        click(menuItem('Gallery'));
 
         setTimeout(function() {
-          galleryItem('Peace Doves').click();
+          click(galleryItem('Peace Doves'));
 
           async(function() {
-            pageContent().innerText.should.contain('Sterling silver ring with paper and resin.');
+            pageText().should.contain('Sterling silver ring with paper and resin.');
           }, done);
         }, 0);
       });
@@ -126,20 +128,20 @@
         document.location.hash = 'gallery/peace-doves';
 
         async(function() {
-          pageContent().innerText.should.contain('Sterling silver ring with paper and resin.');
+          pageText().should.contain('Sterling silver ring with paper and resin.');
         }, done);
       });
     });
 
     describe('weather', function() {
       it('can be navigated to', function(done) {
-        menuItem('Gallery').click();
+        click(menuItem('Gallery'));
 
         setTimeout(function() {
-          galleryItem('Weather').click();
+          click(galleryItem('Weather'));
 
           async(function() {
-            pageContent().innerText.should.contain('');
+            pageText().should.contain('');
           }, done);
         }, 0);
       });
@@ -148,20 +150,20 @@
         document.location.hash = 'gallery/weather';
 
         async(function() {
-          pageContent().innerText.should.contain('Oxidised silver and oval Labradorite cloud pendant.');
+          pageText().should.contain('Oxidised silver and oval Labradorite cloud pendant.');
         }, done);
       });
     });
 
     describe('birds', function() {
       it('can be navigated to', function(done) {
-        menuItem('Gallery').click();
+        click(menuItem('Gallery'));
 
         setTimeout(function() {
-          galleryItem('Birds').click();
+          click(galleryItem('Birds'));
 
           async(function() {
-            pageContent().innerText.should.contain('Round Peridot and fine silver earrings.');
+            pageText().should.contain('Round Peridot and fine silver earrings.');
           }, done);
         }, 0);
       });
@@ -170,20 +172,20 @@
         document.location.hash = 'gallery/birds';
 
         async(function() {
-          pageContent().innerText.should.contain('Round Peridot and fine silver earrings.');
+          pageText().should.contain('Round Peridot and fine silver earrings.');
         }, done);
       });
     });
 
     describe('commissions', function() {
       it('can be navigated to', function(done) {
-        menuItem('Gallery').click();
+        click(menuItem('Gallery'));
 
         setTimeout(function() {
-          galleryItem('Commissions').click();
+          click(galleryItem('Commissions'));
 
           async(function() {
-            pageContent().innerText.should.contain('Diamond and recycled 18ct yellow gold ring.');
+            pageText().should.contain('Diamond and recycled 18ct yellow gold ring.');
           }, done);
         }, 0);
       });
@@ -192,20 +194,20 @@
         document.location.hash = 'gallery/commissions';
 
         async(function() {
-          pageContent().innerText.should.contain('Diamond and recycled 18ct yellow gold ring.');
+          pageText().should.contain('Diamond and recycled 18ct yellow gold ring.');
         }, done);
       });
     });
 
     describe('branches', function() {
       it('can be navigated to', function(done) {
-        menuItem('Gallery').click();
+        click(menuItem('Gallery'));
 
         setTimeout(function() {
-          galleryItem('Branches').click();
+          click(galleryItem('Branches'));
 
           async(function() {
-            pageContent().innerText.should.contain('Sterling silver, wood, resin and suede brooch.');
+            pageText().should.contain('Sterling silver, wood, resin and suede brooch.');
           }, done);
         }, 0);
       });
@@ -214,20 +216,20 @@
         document.location.hash = 'gallery/branches';
 
         async(function() {
-          pageContent().innerText.should.contain('Sterling silver, wood, resin and suede brooch.');
+          pageText().should.contain('Sterling silver, wood, resin and suede brooch.');
         }, done);
       });
     });
 
     describe('woodlands', function() {
       it('can be navigated to', function(done) {
-        menuItem('Gallery').click();
+        click(menuItem('Gallery'));
 
         setTimeout(function() {
-          galleryItem('Woodlands').click();
+          click(galleryItem('Woodlands'));
 
           async(function() {
-            pageContent().innerText.should.contain('Silver acorn pendant.');
+            pageText().should.contain('Silver acorn pendant.');
           }, done);
         }, 0);
       });
@@ -236,7 +238,7 @@
         document.location.hash = 'gallery/woodlands';
 
         async(function() {
-          pageContent().innerText.should.contain('Silver acorn pendant.');
+          pageText().should.contain('Silver acorn pendant.');
         }, done);
       });
     });
@@ -244,21 +246,21 @@
 
   describe('latest news', function() {
     it('is hidden by default', function() {
-      pageContent().innerText.should.not.contain('Stockists');
+      pageText().should.not.contain('Stockists');
       menuItem('Latest News').parentNode.className.should.not.include('current');
     });
 
     it('has a menu link', function(done) {
-      menuItem('Latest News').click();
+      click(menuItem('Latest News'));
 
       async(function() {
-        pageContent().innerText.should.contain('Stockists');
+        pageText().should.contain('Stockists');
         menuItem('Latest News').parentNode.className.should.include('current');
       }, done);
     });
 
     it('has a title', function(done) {
-      menuItem('Latest News').click();
+      click(menuItem('Latest News'));
 
       async(function() {
         document.title.should.include('Latest News');
@@ -266,7 +268,7 @@
     });
 
     it('has a title image', function(done) {
-      menuItem('Latest News').click();
+      click(menuItem('Latest News'));
 
       async(function() {
         document.getElementById('title-image').src.should.include('news');
@@ -277,28 +279,28 @@
       window.location.hash = 'latest-news';
 
       async(function() {
-        pageContent().innerText.should.contain('Stockists');
+        pageText().should.contain('Stockists');
       }, done);
     });
   });
 
   describe('links', function() {
     it('is hidden by default', function() {
-      pageContent().innerText.should.not.contain('Association of Contemporary Jewellery');
+      pageText().should.not.contain('Association of Contemporary Jewellery');
       menuItem('Links').parentNode.className.should.not.include('current');
     });
 
     it('has a menu link', function(done) {
-      menuItem('Links').click();
+      click(menuItem('Links'));
 
       async(function() {
-        pageContent().innerText.should.contain('Association of Contemporary Jewellery');
+        pageText().should.contain('Association of Contemporary Jewellery');
         menuItem('Links').parentNode.className.should.include('current');
       }, done);
     });
 
     it('has a title', function(done) {
-      menuItem('Links').click();
+      click(menuItem('Links'));
 
       async(function() {
         document.title.should.include('Links');
@@ -309,29 +311,29 @@
       window.location.hash = 'links';
 
       async(function() {
-        pageContent().innerText.should.contain('Association of Contemporary Jewellery');
+        pageText().should.contain('Association of Contemporary Jewellery');
       }, done);
     });
   });
 
   describe('contact', function() {
     it('is hiddent by default', function() {
-      pageContent().innerText.should.not.contain('Tel');
+      pageText().should.not.contain('Tel');
       menuItem('Contact').parentNode.className.should.not.include('current');
     });
 
     it('has a menu link', function(done) {
-      menuItem('Contact').click();
+      click(menuItem('Contact'));
 
       async(function() {
-        pageContent().innerText.should.contain('Tel');
-        pageContent().innerText.should.contain('Email');
+        pageText().should.contain('Tel');
+        pageText().should.contain('Email');
         menuItem('Contact').parentNode.className.should.include('current');
       }, done);
     });
 
     it('has a title', function(done) {
-      menuItem('Contact').click();
+      click(menuItem('Contact'));
 
       async(function() {
         document.title.should.include('Contact');
@@ -342,8 +344,8 @@
       window.location.hash = 'contact';
 
       async(function() {
-        pageContent().innerText.should.contain('Tel');
-        pageContent().innerText.should.contain('Email');
+        pageText().should.contain('Tel');
+        pageText().should.contain('Email');
       }, done);
     });
   });
