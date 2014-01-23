@@ -2,14 +2,12 @@
 <html>
   <head>
     <title>Lucy Ramsbottom, Jewellery Designer Maker</title>
-    <link href="lib/normalize.css" media="all" rel="stylesheet" />
-    <link href="lib/mocha.css" media="all" rel="stylesheet" />
-    <link href="app.css" media="all" rel="stylesheet" />
+    <link href="/app.css" media="all" rel="stylesheet" />
   </head>
 
   <body>
     <header>
-      <a href="/"><img id="title-image" alt="About" src="images/about.jpg" /></a>
+      <a href="#"><img id="title-image" alt="About" src="images/about.jpg" /></a>
 
       <nav id="menu">
         <ul>
@@ -42,7 +40,7 @@
 
     <div id="contact-template" class="content pages contact hidden">
       <p>
-        <img alt="Map" src="images/map.png" />
+        <img alt="Map" src="/images/map.png" />
       </p>
 
       <p>
@@ -59,7 +57,7 @@
 
     <div id="links-template" class="hidden">
       <p>
-        <a href="http://www.acj.org.uk/"><img alt="ACJ" src="images/acj_logo.jpg" /></a>
+        <a href="http://www.acj.org.uk/"><img alt="ACJ" src="/images/acj_logo.jpg" /></a>
       </p>
 
       <p>
@@ -520,10 +518,11 @@
 
     <script src="app.js"></script>
 
+    <link href="/lib/mocha.css" media="all" rel="stylesheet" />
     <div id="mocha"></div>
-    <script src="lib/mocha.js"></script>
-    <script src="lib/chai.js"></script>
+    <script src="/lib/mocha.js"></script>
+    <script src="/lib/chai.js"></script>
     <script src="/testem.js"></script>
-    <script src="test.js"></script>
+    <script src="/test.js"></script>
   </body>
 </html>

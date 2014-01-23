@@ -40,25 +40,6 @@ header nav a {
   display: none;
 }
 
-.errors, .success {
-  padding: 0.8em;
-  margin-bottom: 1em;
-  border: 2px solid #ddd;
-}
-
-.errors {
-  background: #fbe3e4;
-  color: #8a1f11;
-  border-color: #fbc2c4;
-  list-style: none;
-}
-
-.success {
-  background: #e6efc2;
-  color: #264409;
-  border-color: #c6d880;
-}
-
 .gallery-index nav {
   position: relative;
   height: 500px;
@@ -200,12 +181,6 @@ header nav a {
 
 .about {
   width: 460px;
-}
-
-.admin .sign-out {
-  width: 620px;
-  margin: 0 auto;
-  padding-left: 40px;
 }
 
 .contact {
