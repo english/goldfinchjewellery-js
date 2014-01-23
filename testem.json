@@ -1,12 +1,13 @@
 {
-  "test_page": "index.html",
+  "test_page": "test/index.html",
   "launch_in_dev": [
-    "chrome",
     "phantomjs"
   ],
   "src_files": [
     "index.html",
-    "test.js",
+    "templates/*",
+    "test/test.js",
     "app.js"
-  ]
+  ],
+  "before_tests": "make test/index.html"
 }

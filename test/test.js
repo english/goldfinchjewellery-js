@@ -146,7 +146,7 @@
         }, 0);
       });
 
-      it('lives on #gallery/peace-doves', function(done) {
+      it('lives on #gallery/weather', function(done) {
         document.location.hash = 'gallery/weather';
 
         async(function() {
