@@ -32,4 +32,7 @@ test/index.html: index.html test/test.html templates/*.html
 server:
 	cd dist && python -m SimpleHTTPServer
 
-.PHONY: dist clean server
+test:
+	testem
+
+.PHONY: all clean server test
