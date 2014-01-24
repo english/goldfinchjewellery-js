@@ -57,7 +57,7 @@
   function setTitleImage(route) {
     var imageName = removeHash(leadingPath(route));
 
-    document.getElementById('title-image').src = '/images/' + imageName + '.jpg';
+    document.getElementById('title-image').src = 'https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/' + imageName + '.jpg';
   }
 
   function menu() {

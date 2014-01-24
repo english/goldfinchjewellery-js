@@ -64,27 +64,27 @@ header nav a {
 }
 
 .gallery-index .weather {
-  background: transparent url(images/gallery/weather.jpg) no-repeat 0 0;
+  background: transparent url(https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/gallery/weather.jpg) no-repeat 0 0;
 }
 
 .gallery-index .birds {
-  background: transparent url(images/gallery/birds.jpg) no-repeat 0 0;
+  background: transparent url(https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/gallery/birds.jpg) no-repeat 0 0;
 }
 
 .gallery-index .peace-doves {
-  background: transparent url(images/gallery/peace-doves.jpg) no-repeat 0 0;
+  background: transparent url(https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/gallery/peace-doves.jpg) no-repeat 0 0;
 }
 
 .gallery-index .commissions {
-  background: transparent url(images/gallery/commissions.jpg) no-repeat 0 0;
+  background: transparent url(https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/gallery/commissions.jpg) no-repeat 0 0;
 }
 
 .gallery-index .branches {
-  background: transparent url(images/gallery/branches.jpg) no-repeat 0 0;
+  background: transparent url(https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/gallery/branches.jpg) no-repeat 0 0;
 }
 
 .gallery-index .woodlands {
-  background: transparent url(images/gallery/woodlands.jpg) no-repeat 0 0;
+  background: transparent url(https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/gallery/woodlands.jpg) no-repeat 0 0;
 }
 
 .gallery-index .peace-doves {
@@ -164,19 +164,19 @@ header nav a {
 }
 
 .news-items .stockists .category-name {
-  background: transparent url(images/stockists_header.jpg) no-repeat right top;
+  background: transparent url(https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/stockists_header.jpg) no-repeat right top;
 }
 
 .news-items .events-and-exhibitions .category-name {
-  background: transparent url(images/events_and_exhibitions_header.jpg) no-repeat right top;
+  background: transparent url(https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/events_and_exhibitions_header.jpg) no-repeat right top;
 }
 
 .news-items .awards .category-name {
-  background: transparent url(images/awards_header.jpg) no-repeat right top;
+  background: transparent url(https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/awards_header.jpg) no-repeat right top;
 }
 
 .news-items .press .category-name {
-  background: transparent url(images/press_header.jpg) no-repeat right top;
+  background: transparent url(https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/press_header.jpg) no-repeat right top;
 }
 
 .about {
