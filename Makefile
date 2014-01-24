@@ -1,6 +1,8 @@
+.PHONY: dist clean
+
 IMAGE_FILES = $(shell find images -type f)
 
-dist: dist/index.html dist/app.js dist/app.css $(patsubst %, dist/%, $(IMAGE_FILES))
+all: dist/index.html dist/app.js dist/app.css $(patsubst %, dist/%, $(IMAGE_FILES))
 
 dist/app.js: app.js
 dist/app.css: app.css
