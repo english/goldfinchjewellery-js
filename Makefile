@@ -1,13 +1,14 @@
 IMAGE_FILES = $(shell find images -type f)
 SUB_TEMPLATES = ruby -e 'puts STDIN.read.gsub("<!-- TEMPLATES -->", Dir["templates/*"].map(&File.method(:read)).join("\n"))'
 SUB_TESTS     = ruby -e 'puts STDIN.read.gsub("<!-- TESTS -->", File.read("test/test.html"))'
+RM_TESTS      = ruby -e 'puts STDIN.read.gsub("<!-- TESTS -->", "")'
 SUB_JS        = ruby -e 'puts STDIN.read.gsub("<!-- JS -->", "<script>\n" + File.read("app.js") + "\n</script>")'
 SUB_CSS       = ruby -e 'puts STDIN.read.gsub("<!-- CSS -->", "<style>\n" + File.read("app.css") + "\n</style>")'
 
 all: dist/index.html $(patsubst %, dist/%, $(IMAGE_FILES))
 
 dist/index.html: index.html app.js app.css templates/*
-	@cat index.html | $(SUB_TEMPLATES) | $(SUB_JS) | $(SUB_CSS) >$@
+	@cat index.html | $(SUB_TEMPLATES) | tidy -indent -quiet | $(RM_TESTS) | $(SUB_JS) | $(SUB_CSS) >$@
 	@echo 'built index.html'
 
 dist/images/%: images/%
