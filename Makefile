@@ -22,4 +22,7 @@ server:
 test:
 	testem
 
+deploy:
+	curl -T dist/index.html ftp://$(USER):$(PASSWORD)@goldfinchjewellery.co.uk/web/index.html
+
 .PHONY: all clean server test
