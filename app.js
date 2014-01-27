@@ -83,10 +83,6 @@
     return element.cloneNode(true);
   }
 
-  function find(links, predicate) {
-    return first(Array.prototype.filter.call(links, predicate));
-  }
-
   function pageLink(route) {
     var links = menu().getElementsByTagName('a');
 
@@ -96,9 +92,9 @@
   }
 
   function pages() {
-    return map(menu().getElementsByTagName('a'), function(link) {
+    return map(function(link) {
       return link.innerText;
-    });
+    }, menu().getElementsByTagName('a'));
   }
 
   function addClass(element, className) {
@@ -106,21 +102,9 @@
   }
 
   function removeClass(elements, className) {
-    each(elements, function(element) {
+    each(function(element) {
       element.className = element.className.replace(className, '');
-    });
-  }
-
-  function first(arr) {
-    return arr[0];
-  }
-
-  function each(seq, fn) {
-    Array.prototype.forEach.call(seq, fn);
-  }
-
-  function map(seq, fn) {
-    return Array.prototype.map.call(seq, fn);
+    }, elements);
   }
 
   function upperCaseFirstLetter(string) {
@@ -131,9 +115,49 @@
     return string.replace('#', '');
   }
 
+  function toArray(collection) {
+    return [].slice.call(collection);
+  }
+
   window.onhashchange = function() {
     route(window.location.hash);
   };
+
+  function first(arr) {
+    return arr[0];
+  }
+
+  function each(handler, collection) {
+    for (var index = 0; index < collection.length; index++) {
+      handler(collection[index], index, collection);
+    }
+  }
+
+  function reduce(handler, collection, accumulator) {
+    each(function(value) {
+      accumulator = handler(accumulator, value);
+    }, collection);
+
+    return accumulator;
+  }
+
+  function map(handler, collection) {
+    return reduce(function(accumulator, value) {
+      accumulator.push(handler(value));
+      return accumulator;
+    }, collection, []);
+  }
+
+  function filter(handler, collection) {
+    return reduce(function(accumulator, item) {
+      if (handler(item)) accumulator.push(item);
+      return accumulator;
+    }, collection, []);
+  }
+
+  function find(links, predicate) {
+    return first(filter(predicate, links));
+  }
 
   setup();
 })();
