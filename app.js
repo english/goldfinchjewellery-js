@@ -1,163 +1,184 @@
-;(function() {
-  function setup() {
-    if (window.location.hash) {
-      route(window.location.hash);
-    } else {
-      window.location.hash = 'about';
-    }
+function setup() {
+  if (window.location.hash) {
+    route(window.location.hash);
+  } else {
+    window.location.hash = 'about';
   }
+}
 
-  function titleFor(route) {
-    return menuLinkFromRoute(leadingPath(route)).innerText +
-      ' - Lucy Ramsbottom, Jewellery Designer Maker';
+function titleFor(route) {
+  return menuLinkFromRoute(leadingPath(route)).innerText +
+    ' - Lucy Ramsbottom, Jewellery Designer Maker';
+}
+
+function menuLinkFromRoute(route) {
+  return find(menu().getElementsByTagName('a'), function(link) {
+    return link.getAttribute('href') === route;
+  });
+}
+
+function route(path) {
+  if (routeExists(path)) {
+    document.title = titleFor(path);
+    setContent(path);
+    setCurrent(path);
+    setTitleImage(path);
+  } else {
+    window.location.hash = 'about';
   }
+}
 
-  function menuLinkFromRoute(route) {
-    return find(menu().getElementsByTagName('a'), function(link) {
-      return link.getAttribute('href') === route;
-    });
-  }
+function mainElement() {
+  return document.getElementById('main');
+}
 
-  function route(path) {
-    if (routeExists(path)) {
-      document.title = titleFor(path);
-      setContent(template(path));
-      setCurrent(path);
-      setTitleImage(path);
-    } else {
-      window.location.hash = 'about';
-    }
-  }
+function routeExists(path) {
+  return templateElement(path) !== null;
+}
 
-  function mainElement() {
-    return document.getElementById('main');
-  }
+function renderNews() {
+  var div = document.createElement('div');
+  var text = 'Stockists';
+  var xhr = new XMLHttpRequest();
+  var json;
 
-  function routeExists(path) {
-    return templateElement(path) !== null;
-  }
+  xhr.open('get', 'http://goldfinchjewellery.herokuapp.com/news.json', false);
+  xhr.onload = function() {
+    json = JSON.parse(this.responseText);
+  };
+  xhr.send();
 
-  function template(route) {
-    var node = templateElement(route).cloneNode(true);
+  text += json.newsItems[0].body;
 
-    removeClass([node], 'hidden');
+  div.appendChild(document.createTextNode(text));
 
-    return node;
-  }
+  mainElement().appendChild(div);
+}
 
-  function templateElement(path) {
-    var templateId = removeHash(path) + '-template';
-    return document.getElementById(templateId);
-  }
+function template(route) {
+  var node = templateElement(route).cloneNode(true);
+  removeClass([node], 'hidden');
+  return node;
+}
 
-  function leadingPath(route) {
-    return first(route.split('/'));
-  }
+function templateElement(path) {
+  var templateId = removeHash(path) + '-template';
+  return document.getElementById(templateId);
+}
 
-  function setTitleImage(route) {
-    var imageName = removeHash(leadingPath(route));
+function leadingPath(route) {
+  return first(route.split('/'));
+}
 
-    document.getElementById('title-image').src = 'https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/' + imageName + '.jpg';
-  }
+function setTitleImage(route) {
+  var imageName = removeHash(leadingPath(route));
 
-  function menu() {
-    return document.getElementById('menu');
-  }
+  document.getElementById('title-image').src = 'https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/' + imageName + '.jpg';
+}
 
-  function menuItem(route) {
-    return menuLinkFromRoute(route).parentNode;
-  }
+function menu() {
+  return document.getElementById('menu');
+}
 
-  function setCurrent(route) {
-    var current = menu().getElementsByClassName('current');
-    removeClass(current, 'current');
-    addClass(menuItem(leadingPath(route)), 'current');
-  }
+function menuItem(route) {
+  return menuLinkFromRoute(route).parentNode;
+}
 
-  function setContent(content) {
-    mainElement().innerHTML = '';
+function setCurrent(route) {
+  var current = menu().getElementsByClassName('current');
+  removeClass(current, 'current');
+  addClass(menuItem(leadingPath(route)), 'current');
+}
+
+function setContent(path) {
+  mainElement().innerHTML = '';
+
+  if (path === '#latest-news') {
+    renderNews();
+  } else {
+    var content = template(path)
     mainElement().appendChild(content);
   }
+}
 
-  function cloneElement(element) {
-    return element.cloneNode(true);
+function cloneElement(element) {
+  return element.cloneNode(true);
+}
+
+function pageLink(route) {
+  var links = menu().getElementsByTagName('a');
+
+  return find(links, function(link) {
+    return link.innerText === page;
+  });
+}
+
+function pages() {
+  return map(function(link) {
+    return link.innerText;
+  }, menu().getElementsByTagName('a'));
+}
+
+function addClass(element, className) {
+  element.className += 'current';
+}
+
+function removeClass(elements, className) {
+  each(function(element) {
+    element.className = element.className.replace(className, '');
+  }, elements);
+}
+
+function upperCaseFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function removeHash(string) {
+  return string.replace('#', '');
+}
+
+function toArray(collection) {
+  return [].slice.call(collection);
+}
+
+window.onhashchange = function() {
+  route(window.location.hash);
+};
+
+function first(arr) {
+  return arr[0];
+}
+
+function each(handler, collection) {
+  for (var index = 0; index < collection.length; index++) {
+    handler(collection[index], index, collection);
   }
+}
 
-  function pageLink(route) {
-    var links = menu().getElementsByTagName('a');
+function reduce(handler, collection, accumulator) {
+  each(function(value) {
+    accumulator = handler(accumulator, value);
+  }, collection);
 
-    return find(links, function(link) {
-      return link.innerText === page;
-    });
-  }
+  return accumulator;
+}
 
-  function pages() {
-    return map(function(link) {
-      return link.innerText;
-    }, menu().getElementsByTagName('a'));
-  }
-
-  function addClass(element, className) {
-    element.className += 'current';
-  }
-
-  function removeClass(elements, className) {
-    each(function(element) {
-      element.className = element.className.replace(className, '');
-    }, elements);
-  }
-
-  function upperCaseFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  function removeHash(string) {
-    return string.replace('#', '');
-  }
-
-  function toArray(collection) {
-    return [].slice.call(collection);
-  }
-
-  window.onhashchange = function() {
-    route(window.location.hash);
-  };
-
-  function first(arr) {
-    return arr[0];
-  }
-
-  function each(handler, collection) {
-    for (var index = 0; index < collection.length; index++) {
-      handler(collection[index], index, collection);
-    }
-  }
-
-  function reduce(handler, collection, accumulator) {
-    each(function(value) {
-      accumulator = handler(accumulator, value);
-    }, collection);
-
+function map(handler, collection) {
+  return reduce(function(accumulator, value) {
+    accumulator.push(handler(value));
     return accumulator;
-  }
+  }, collection, []);
+}
 
-  function map(handler, collection) {
-    return reduce(function(accumulator, value) {
-      accumulator.push(handler(value));
-      return accumulator;
-    }, collection, []);
-  }
+function filter(handler, collection) {
+  return reduce(function(accumulator, item) {
+    if (handler(item)) accumulator.push(item);
+    return accumulator;
+  }, collection, []);
+}
 
-  function filter(handler, collection) {
-    return reduce(function(accumulator, item) {
-      if (handler(item)) accumulator.push(item);
-      return accumulator;
-    }, collection, []);
-  }
+function find(links, predicate) {
+  return first(filter(predicate, links));
+}
 
-  function find(links, predicate) {
-    return first(filter(predicate, links));
-  }
-
-  setup();
-})();
+setup();
