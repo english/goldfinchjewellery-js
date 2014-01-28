@@ -13,7 +13,7 @@ dist/index.html: index.html app.js app.css templates/*
 clean:
 	rm -rf dist/*
 
-test/index.html: index.html test/test.html templates/*.html
+test/index.html: app.js index.html test/test.html templates/*.html
 	@cat index.html | $(SUB_TEMPLATES) | $(SUB_TESTS) | $(SUB_JS) | $(SUB_CSS) >$@
 
 server:
