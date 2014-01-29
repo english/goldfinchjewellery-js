@@ -1,3 +1,5 @@
+window.rootElement = document.getElementById('main');
+
 function setup() {
   if (window.location.hash) {
     route(window.location.hash);
@@ -12,9 +14,9 @@ function titleFor(route) {
 }
 
 function menuLinkFromRoute(route) {
-  return find(menu().getElementsByTagName('a'), function(link) {
+  return find(function(link) {
     return link.getAttribute('href') === route;
-  });
+  }, menu().getElementsByTagName('a'));
 }
 
 function route(path) {
@@ -28,31 +30,61 @@ function route(path) {
   }
 }
 
-function mainElement() {
-  return document.getElementById('main');
-}
-
 function routeExists(path) {
   return templateElement(path) !== null;
 }
 
 function renderNews() {
   var div = document.createElement('div');
-  var text = 'Stockists';
   var xhr = new XMLHttpRequest();
-  var json;
 
-  xhr.open('get', 'http://goldfinchjewellery.herokuapp.com/news.json', false);
-  xhr.onload = function() {
-    json = JSON.parse(this.responseText);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState !== 4) return;
+
+    var json = JSON.parse(xhr.responseText);
+
+    window.rootElement.innerHTML = renderNewsItems(json.newsItems);
   };
+
+  xhr.open('get', 'http://goldfinchjewellery.herokuapp.com/news.json', true);
   xhr.send();
+}
 
-  text += json.newsItems[0].body;
+function renderNewsItems(newsItems) {
+  var groupedNewsItems = groupBy('category', newsItems);
+  var categories = Object.keys(groupedNewsItems);
+  var template = '';
 
-  div.appendChild(document.createTextNode(text));
+  template += '<div class="latest-news">';
+  template += '<ul class="news-items">';
+  template += map(function(category) {
+    return renderCategory(category, groupedNewsItems[category]);
+  }, categories).join('');
+  template += '</ul>';
+  template += '</div>';
 
-  mainElement().appendChild(div);
+  return template;
+}
+
+function renderCategory(name, newsItems) {
+  var template = '';
+
+  template += '<li class="news-category ' + name + '" id="news-' + name + '">';
+  template += '<h2 class="category-name">' + name + '</h2>';
+  template += map(renderNewsItem, newsItems).join('');
+  template += '</li>';
+
+  return template;
+}
+
+function renderNewsItem(newsItem) {
+  var template = '';
+
+  template += '<article class="news-item">';
+  template += '<div class="content">' + newsItem.body + '</article>';
+  template += '</article>';
+
+  return template;
 }
 
 function template(route) {
@@ -91,13 +123,13 @@ function setCurrent(route) {
 }
 
 function setContent(path) {
-  mainElement().innerHTML = '';
+  window.rootElement.innerHTML = '';
 
   if (path === '#latest-news') {
     renderNews();
   } else {
-    var content = template(path)
-    mainElement().appendChild(content);
+    var content = template(path);
+    window.rootElement.appendChild(content);
   }
 }
 
@@ -108,9 +140,9 @@ function cloneElement(element) {
 function pageLink(route) {
   var links = menu().getElementsByTagName('a');
 
-  return find(links, function(link) {
+  return find(function(link) {
     return link.innerText === page;
-  });
+  }, links);
 }
 
 function pages() {
@@ -177,8 +209,20 @@ function filter(handler, collection) {
   }, collection, []);
 }
 
-function find(links, predicate) {
+function find(predicate, links) {
   return first(filter(predicate, links));
+}
+
+function groupBy(attribute, collection) {
+  var result = {};
+
+  each(function(item) {
+    var key = item[attribute];
+    result[key] = result[key] || [];
+    result[key].push(item);
+  }, collection);
+
+  return result;
 }
 
 setup();

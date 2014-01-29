@@ -14,9 +14,9 @@ function click(element) {
 }
 
 function navItem(page) {
-  return Array.prototype.filter.call(document.getElementById('menu').getElementsByTagName('a'), function(link) {
+  return find(function(link) {
     return link.innerText === page;
-  })[0];
+  }, document.getElementById('menu').getElementsByTagName('a'));
 }
 
 function pageContent() {
@@ -32,9 +32,6 @@ function async(fn, done) {
     fn();
     done();
   }, 0);
-}
-
-function stub() {
 }
 
 beforeEach(function(done) {
@@ -249,6 +246,7 @@ describe('galleries', function() {
 describe('latest news', function() {
   beforeEach(function() {
     var url = 'http://goldfinchjewellery.herokuapp.com/news.json';
+
     this.server = sinon.fakeServer.create();
 
     this.server.respondWith('OPTIONS', url, [
@@ -257,13 +255,26 @@ describe('latest news', function() {
       ''
     ]);
 
+    var response = {
+      newsItems: [{
+        body: 'I have a new stockist',
+        category: 'stockists'
+      }, {
+        body: 'I won an award',
+        category: 'awards'
+      }, {
+        body: 'I won another award!',
+        category: 'awards'
+      }]
+    };
+
     this.server.respondWith('GET', url, [
       200,
       {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*"
       },
-      '{"newsItems": [{ "body": "I have a new stockist" }]}'
+      JSON.stringify(response)
     ]);
   });
 
@@ -274,15 +285,6 @@ describe('latest news', function() {
   it('is hidden by default', function() {
     pageText().should.not.contain('Stockists');
     navItem('Latest News').parentNode.className.should.not.include('current');
-  });
-
-  it('has a menu link', function(done) {
-    click(navItem('Latest News'));
-
-    async(function() {
-      pageText().should.contain('Stockists');
-      navItem('Latest News').parentNode.className.should.include('current');
-    }, done);
   });
 
   it('has a title', function(done) {
@@ -305,15 +307,19 @@ describe('latest news', function() {
     window.location.hash = 'latest-news';
 
     async(function() {
-      pageText().should.contain('Stockists');
+      document.title.should.include('Latest News');
     }, done);
   });
 
-  it('shows what the api tells it to', function() {
+  it('shows what the api tells it to', function(done) {
     route('#latest-news');
     this.server.respond();
 
-    pageText().should.include('I have a new stockist');
+    async(function() {
+      document.getElementById('news-stockists').innerText.should.include('I have a new stockist');
+      document.getElementById('news-awards').innerText.should.include('I won an award');
+      document.getElementById('news-awards').innerText.should.include('I won another award!');
+    }, done);
   });
 });
 
@@ -380,6 +386,26 @@ describe('contact', function() {
       pageText().should.contain('Tel');
       pageText().should.contain('Email');
     }, done);
+  });
+});
+
+describe('group by', function() {
+  it('groups objects by key', function() {
+    var collection = [
+      { firstName: 'dave', surname: 'smith' },
+      { firstName: 'john', surname: 'jones' },
+      { firstName: 'steve', surname: 'smith' }
+    ];
+
+    groupBy('surname', collection).should.eql({
+      'smith': [
+        { firstName: 'dave', surname: 'smith' },
+        { firstName: 'steve', surname: 'smith' }
+      ],
+      'jones': [
+        { firstName: 'john', surname: 'jones' }
+      ]
+    });
   });
 });
 
