@@ -14,7 +14,7 @@ function click(element) {
 }
 
 function navItem(page) {
-  return find(function(link) {
+  return fn.find(function(link) {
     return link.innerText === page;
   }, document.getElementById('menu').getElementsByTagName('a'));
 }
@@ -397,7 +397,7 @@ describe('group by', function() {
       { firstName: 'steve', surname: 'smith' }
     ];
 
-    groupBy('surname', collection).should.eql({
+    fn.groupBy('surname', collection).should.eql({
       'smith': [
         { firstName: 'dave', surname: 'smith' },
         { firstName: 'steve', surname: 'smith' }

@@ -1,33 +1,95 @@
-window.rootElement = document.getElementById('main');
+var fn = {};
 
-function setup() {
-  if (window.location.hash) {
-    route(window.location.hash);
-  } else {
-    window.location.hash = 'about';
+fn.first = function(arr) {
+  return arr[0];
+};
+
+fn.each = function(handler, collection) {
+  for (var index = 0; index < collection.length; index++) {
+    handler(collection[index], index, collection);
   }
-}
+};
 
-function titleFor(route) {
-  return menuLinkFromRoute(leadingPath(route)).innerText +
-    ' - Lucy Ramsbottom, Jewellery Designer Maker';
-}
+fn.reduce = function(handler, collection, accumulator) {
+  fn.each(function(value) {
+    accumulator = handler(accumulator, value);
+  }, collection);
 
-function menuLinkFromRoute(route) {
-  return find(function(link) {
-    return link.getAttribute('href') === route;
-  }, menu().getElementsByTagName('a'));
-}
+  return accumulator;
+};
+
+fn.map = function(handler, collection) {
+  return fn.reduce(function(accumulator, value) {
+    accumulator.push(handler(value));
+    return accumulator;
+  }, collection, []);
+};
+
+fn.filter = function(handler, collection) {
+  return fn.reduce(function(accumulator, item) {
+    if (handler(item)) accumulator.push(item);
+    return accumulator;
+  }, collection, []);
+};
+
+fn.find = function(predicate, links) {
+  return fn.first(fn.filter(predicate, links));
+};
+
+fn.groupBy = function(attribute, collection) {
+  var result = {};
+
+  fn.each(function(item) {
+    var key = item[attribute];
+    result[key] = result[key] || [];
+    result[key].push(item);
+  }, collection);
+
+  return result;
+};
+
+var str = {};
+
+str.removeHash = function(string) {
+  return string.replace('#', '');
+};
+
+str.leadingPath = function(route) {
+  return fn.first(route.split('/'));
+};
+
+removeClass = function(elements, className) {
+  fn.each(function(element) {
+    element.className = element.className.replace(className, '');
+  }, elements);
+};
+
+window.rootElement = document.getElementById('main');
 
 function route(path) {
   if (routeExists(path)) {
-    document.title = titleFor(path);
-    setContent(path);
-    setCurrent(path);
+    setTitle(path);
     setTitleImage(path);
+    setContent(path);
+    menu.setCurrent(path);
   } else {
     window.location.hash = 'about';
   }
+}
+
+function setTitle(route) {
+  var prefix = menu.linkForRoute(route).innerText
+  var suffix = 'Lucy Ramsbottom, Jewellery Designer Maker';
+
+  document.title = [prefix, suffix].join(' - ');
+}
+
+function setTitleImage(route) {
+  var topLevelRoute = str.leadingPath(route);
+  var imageName = str.removeHash(topLevelRoute);
+  var imageUrl = 'https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/' + imageName + '.jpg';
+
+  document.getElementById('title-image').src = imageUrl;
 }
 
 function routeExists(path) {
@@ -35,7 +97,6 @@ function routeExists(path) {
 }
 
 function renderNews() {
-  var div = document.createElement('div');
   var xhr = new XMLHttpRequest();
 
   xhr.onreadystatechange = function() {
@@ -51,13 +112,13 @@ function renderNews() {
 }
 
 function renderNewsItems(newsItems) {
-  var groupedNewsItems = groupBy('category', newsItems);
+  var groupedNewsItems = fn.groupBy('category', newsItems);
   var categories = Object.keys(groupedNewsItems);
   var template = '';
 
   template += '<div class="latest-news">';
   template += '<ul class="news-items">';
-  template += map(function(category) {
+  template += fn.map(function(category) {
     return renderCategory(category, groupedNewsItems[category]);
   }, categories).join('');
   template += '</ul>';
@@ -71,7 +132,7 @@ function renderCategory(name, newsItems) {
 
   template += '<li class="news-category ' + name + '" id="news-' + name + '">';
   template += '<h2 class="category-name">' + name + '</h2>';
-  template += map(renderNewsItem, newsItems).join('');
+  template += fn.map(renderNewsItem, newsItems).join('');
   template += '</li>';
 
   return template;
@@ -87,40 +148,29 @@ function renderNewsItem(newsItem) {
   return template;
 }
 
-function template(route) {
-  var node = templateElement(route).cloneNode(true);
-  removeClass([node], 'hidden');
-  return node;
-}
-
 function templateElement(path) {
-  var templateId = removeHash(path) + '-template';
+  var templateId = str.removeHash(path) + '-template';
   return document.getElementById(templateId);
 }
 
-function leadingPath(route) {
-  return first(route.split('/'));
-}
+var menu = {};
 
-function setTitleImage(route) {
-  var imageName = removeHash(leadingPath(route));
-
-  document.getElementById('title-image').src = 'https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/' + imageName + '.jpg';
-}
-
-function menu() {
-  return document.getElementById('menu');
-}
-
-function menuItem(route) {
-  return menuLinkFromRoute(route).parentNode;
-}
-
-function setCurrent(route) {
-  var current = menu().getElementsByClassName('current');
+menu.setCurrent = function(route) {
+  var current = document.querySelectorAll('#menu .current');
   removeClass(current, 'current');
-  addClass(menuItem(leadingPath(route)), 'current');
-}
+
+  var menuItem = menu.linkForRoute(route).parentNode;
+  menuItem.className += ' current';
+};
+
+menu.linkForRoute = function(route) {
+  var topLevelRoute = str.leadingPath(route);
+  var menuLinks = document.querySelectorAll('#menu a');
+
+  return fn.find(function(link) {
+    return link.getAttribute('href') === topLevelRoute;
+  }, menuLinks);
+};
 
 function setContent(path) {
   window.rootElement.innerHTML = '';
@@ -128,101 +178,23 @@ function setContent(path) {
   if (path === '#latest-news') {
     renderNews();
   } else {
-    var content = template(path);
-    window.rootElement.appendChild(content);
+    var template = templateElement(path).cloneNode(true);
+    removeClass([template], 'hidden');
+
+    window.rootElement.appendChild(template);
   }
-}
-
-function cloneElement(element) {
-  return element.cloneNode(true);
-}
-
-function pageLink(route) {
-  var links = menu().getElementsByTagName('a');
-
-  return find(function(link) {
-    return link.innerText === page;
-  }, links);
-}
-
-function pages() {
-  return map(function(link) {
-    return link.innerText;
-  }, menu().getElementsByTagName('a'));
-}
-
-function addClass(element, className) {
-  element.className += 'current';
-}
-
-function removeClass(elements, className) {
-  each(function(element) {
-    element.className = element.className.replace(className, '');
-  }, elements);
-}
-
-function upperCaseFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function removeHash(string) {
-  return string.replace('#', '');
-}
-
-function toArray(collection) {
-  return [].slice.call(collection);
 }
 
 window.onhashchange = function() {
   route(window.location.hash);
 };
 
-function first(arr) {
-  return arr[0];
-}
-
-function each(handler, collection) {
-  for (var index = 0; index < collection.length; index++) {
-    handler(collection[index], index, collection);
+function setup() {
+  if (window.location.hash) {
+    route(window.location.hash);
+  } else {
+    window.location.hash = 'about';
   }
-}
-
-function reduce(handler, collection, accumulator) {
-  each(function(value) {
-    accumulator = handler(accumulator, value);
-  }, collection);
-
-  return accumulator;
-}
-
-function map(handler, collection) {
-  return reduce(function(accumulator, value) {
-    accumulator.push(handler(value));
-    return accumulator;
-  }, collection, []);
-}
-
-function filter(handler, collection) {
-  return reduce(function(accumulator, item) {
-    if (handler(item)) accumulator.push(item);
-    return accumulator;
-  }, collection, []);
-}
-
-function find(predicate, links) {
-  return first(filter(predicate, links));
-}
-
-function groupBy(attribute, collection) {
-  var result = {};
-
-  each(function(item) {
-    var key = item[attribute];
-    result[key] = result[key] || [];
-    result[key].push(item);
-  }, collection);
-
-  return result;
 }
 
 setup();
