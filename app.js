@@ -1,82 +1,89 @@
 window.rootElement = document.getElementById('main');
-window.routes = ['about', 'latest-news', 'contact', 'links', 'gallery',
-  'gallery/peace-doves', 'gallery/weather', 'gallery/birds',
-  'gallery/commissions', 'gallery/branches', 'gallery/woodlands'];
+window.routes = [
+  'about',
+  'latest-news',
+  'contact',
+  'links',
+  'gallery',
+  'gallery/peace-doves',
+  'gallery/weather',
+  'gallery/birds',
+  'gallery/commissions',
+  'gallery/branches',
+  'gallery/woodlands'
+];
 
 window.onhashchange = function() {
-  route(window.location.hash);
+  route(window.location.hash.replace('#', ''));
 };
 
 function setup() {
   if (window.location.hash) {
-    route(window.location.hash);
+    route(window.location.hash.replace('#', ''));
   } else {
     window.location.hash = 'about';
   }
 }
 
 function route(path) {
-  if (routeExists(path)) {
-    setTitle(path);
-    setTitleImage(path);
-    setContent(path);
-    menu.setCurrent(path);
+  var leadingPath = first(path.split('/'));
+
+  if (routeExists()) {
+    setTitle();
+    setTitleImage();
+    setContent();
+    setCurrentMenuItem();
   } else {
     window.location.hash = 'about';
   }
-}
 
-function routeExists(path) {
-  return !!find(function(route) {
-    return removeHash(path) === route;
-  }, window.routes);
-}
+  function routeExists() {
+    return !!find(function(route) {
+      return path === route;
+    }, window.routes);
+  }
 
-function setTitle(route) {
-  var prefix = menu.linkForRoute(route).innerText
-  var suffix = 'Lucy Ramsbottom, Jewellery Designer Maker';
+  function setTitle() {
+    var prefix = menuLink().innerText;
+    var suffix = 'Lucy Ramsbottom, Jewellery Designer Maker';
 
-  document.title = [prefix, suffix].join(' - ');
-}
+    document.title = [prefix, suffix].join(' - ');
+  }
 
-function setTitleImage(route) {
-  var topLevelRoute = leadingPath(route);
-  var imageName = removeHash(topLevelRoute);
-  var imageUrl = 'https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/' + imageName + '.jpg';
+  function setTitleImage() {
+    var imageUrl = 'https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/' + leadingPath + '.jpg';
 
-  document.getElementById('title-image').src = imageUrl;
-}
+    document.getElementById('title-image').src = imageUrl;
+  }
 
-var menu = {};
+  function setCurrentMenuItem() {
+    removeClass(document.querySelectorAll('#menu .current'), 'current');
 
-menu.setCurrent = function(route) {
-  var current = document.querySelectorAll('#menu .current');
-  removeClass(current, 'current');
+    var menuItem = menuLink().parentNode;
+    menuItem.className += ' current';
+  }
 
-  var menuItem = menu.linkForRoute(route).parentNode;
-  menuItem.className += ' current';
-};
+  function setContent() {
+    window.rootElement.innerHTML = '';
 
-menu.linkForRoute = function(route) {
-  var topLevelRoute = leadingPath(route);
-  var menuLinks = document.querySelectorAll('#menu a');
+    if (path === 'latest-news') {
+      renderNews();
+    } else {
+      var templateId = path + '-template';
+      var template = document.getElementById(templateId).cloneNode(true);
 
-  return find(function(link) {
-    return link.getAttribute('href') === topLevelRoute;
-  }, menuLinks);
-};
+      removeClass([template], 'hidden');
 
-function setContent(path) {
-  window.rootElement.innerHTML = '';
+      window.rootElement.appendChild(template);
+    }
+  }
 
-  if (path === '#latest-news') {
-    renderNews();
-  } else {
-    var templateId = removeHash(path) + '-template';
-    var template = document.getElementById(templateId).cloneNode(true);
-    removeClass([template], 'hidden');
+  function menuLink() {
+    var menuLinks = document.querySelectorAll('#menu a');
 
-    window.rootElement.appendChild(template);
+    return find(function(link) {
+      return link.getAttribute('href').replace('#', '') === leadingPath;
+    }, menuLinks);
   }
 }
 
@@ -177,14 +184,6 @@ function groupBy(attribute, collection) {
   }, collection);
 
   return result;
-}
-
-function removeHash(string) {
-  return string.replace('#', '');
-}
-
-function leadingPath(route) {
-  return first(route.split('/'));
 }
 
 function removeClass(elements, className) {

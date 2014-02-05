@@ -312,7 +312,7 @@ describe('latest news', function() {
   });
 
   it('shows what the api tells it to', function(done) {
-    route('#latest-news');
+    route('latest-news');
     this.server.respond();
 
     async(function() {
