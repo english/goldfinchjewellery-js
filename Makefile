@@ -1,23 +1,33 @@
 SUB_TEMPLATES = ruby -e 'puts STDIN.read.gsub("<!-- TEMPLATES -->", Dir["templates/*"].map(&File.method(:read)).join("\n"))'
-SUB_TESTS     = ruby -e 'puts STDIN.read.gsub("<!-- TESTS -->", File.read("test/test.html"))'
-RM_TESTS      = ruby -e 'puts STDIN.read.gsub("<!-- TESTS -->", "")'
 
-all: dist/index.html
+all: dist
+
+dist: dist/index.html dist/app.js dist/app.css
+
+dist/app.js: app.js
+	cp $< $@
+
+dist/app.css: app.css
+	cp $< $@
 
 dist/index.html: index.html app.js app.css templates/*
 	rm -rf dist/*
-	@cat index.html | $(SUB_TEMPLATES) | tidy -indent -quiet | $(RM_TESTS) >$@
+	@cat index.html | $(SUB_TEMPLATES) | tidy -indent -quiet >$@
 	@echo 'built index.html'
-	cp app.js dist/app.js
-	cp app.css dist/app.css
 
 clean:
 	rm -rf dist/*
 
-test-files: app.js index.html test/test.html templates/*.html
-	@cat index.html | $(SUB_TEMPLATES) | $(SUB_TESTS) >test/index.html
+test-files: test/index.html test/app.js test/app.css
 
-test/index.html: test-files
+test/index.html: test/runner.html templates/*.html
+	@cat test/runner.html | $(SUB_TEMPLATES) >$@
+
+test/app.js: app.js
+	cp $< $@
+
+test/app.css: app.css
+	cp $< $@
 
 server:
 	cd dist && python -m SimpleHTTPServer
@@ -30,4 +40,4 @@ deploy:
 	curl -T dist/app.css ftp://$(USER):$(PASSWORD)@goldfinchjewellery.co.uk/web/app.css
 	curl -T dist/app.js ftp://$(USER):$(PASSWORD)@goldfinchjewellery.co.uk/web/app.js
 
-.PHONY: all clean server test
+.PHONY: all clean server test test-files

@@ -6,8 +6,8 @@
   "src_files": [
     "index.html",
     "templates/*",
-    "test/test.js",
+    "test/*",
     "app.js"
   ],
-  "before_tests": "make test/index.html"
+  "before_tests": "make test-files"
 }
