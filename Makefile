@@ -4,16 +4,15 @@ all: dist
 
 dist: dist/index.html dist/app.js dist/app.css
 
-dist/app.js: app.js
-	cp $< $@
+dist/app.js: app.js fn.js
+	cat fn.js app.js > $@
 
 dist/app.css: app.css
 	cp $< $@
 
 dist/index.html: index.html app.js app.css templates/*
 	rm -rf dist/*
-	@cat index.html | $(SUB_TEMPLATES) | tidy -indent -quiet >$@
-	@echo 'built index.html'
+	cat index.html | $(SUB_TEMPLATES) | tidy -indent -quiet >$@
 
 clean:
 	rm -rf dist/*
@@ -22,9 +21,9 @@ test-files: test/tmp/index.html test/tmp/app.js
 
 test/tmp/index.html: test/runner.html templates/*.html
 	mkdir -p test/tmp
-	@cat test/runner.html | $(SUB_TEMPLATES) >$@
+	cat test/runner.html | $(SUB_TEMPLATES) >$@
 
-test/tmp/app.js: app.js
+test/tmp/app.js: dist/app.js
 	mkdir -p test/tmp
 	cp $< $@
 
