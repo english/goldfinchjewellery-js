@@ -71,14 +71,9 @@ function route(path) {
     window.ROOT_ELEMENT.innerHTML = '';
 
     if (path === 'latest-news') {
-      renderNews();
+      newsView();
     } else {
-      var templateId = path + '-template';
-      var template = document.getElementById(templateId).cloneNode(true);
-
-      removeClass([template], 'hidden');
-
-      window.ROOT_ELEMENT.appendChild(template);
+      simpleView(path);
     }
   }
 
@@ -88,12 +83,6 @@ function route(path) {
     return find(function(link) {
       return link.getAttribute('href').replace('#', '') === leadingPath;
     }, menuLinks);
-  }
-
-  function removeClass(elements, className) {
-    each(function(element) {
-      element.className = element.className.replace(className, '');
-    }, elements);
   }
 }
 

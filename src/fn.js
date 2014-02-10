@@ -44,3 +44,9 @@ function groupBy(attribute, collection) {
 
   return result;
 }
+
+function removeClass(elements, className) {
+  each(function(element) {
+    element.className = element.className.replace(className, '');
+  }, elements);
+}

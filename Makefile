@@ -4,8 +4,8 @@ all: dist
 
 dist: dist/index.html dist/app.js dist/app.css
 
-dist/app.js: src/app.js src/fn.js src/news.js
-	cat src/fn.js src/news.js src/app.js > $@
+dist/app.js: src/app.js src/fn.js src/views.js
+	cat src/fn.js src/views.js src/app.js > $@
 
 dist/app.css: src/app.css
 	cp $< $@

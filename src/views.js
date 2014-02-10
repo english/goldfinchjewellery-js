@@ -1,4 +1,13 @@
-function renderNews() {
+function simpleView(path) {
+  var templateId = path + '-template';
+  var template = document.getElementById(templateId).cloneNode(true);
+
+  removeClass([template], 'hidden');
+
+  window.ROOT_ELEMENT.appendChild(template);
+}
+
+function newsView() {
   var xhr = new XMLHttpRequest();
 
   xhr.onreadystatechange = function() {
