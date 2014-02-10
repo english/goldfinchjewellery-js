@@ -1,6 +1,4 @@
-dist
 *.swp
 .DS_Store
-test/index.html
-test/app.css
-test/app.js
+dist
+test/tmp

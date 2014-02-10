@@ -18,15 +18,14 @@ dist/index.html: index.html app.js app.css templates/*
 clean:
 	rm -rf dist/*
 
-test-files: test/index.html test/app.js test/app.css
+test-files: test/tmp/index.html test/tmp/app.js
 
-test/index.html: test/runner.html templates/*.html
+test/tmp/index.html: test/runner.html templates/*.html
+	mkdir -p test/tmp
 	@cat test/runner.html | $(SUB_TEMPLATES) >$@
 
-test/app.js: app.js
-	cp $< $@
-
-test/app.css: app.css
+test/tmp/app.js: app.js
+	mkdir -p test/tmp
 	cp $< $@
 
 server:

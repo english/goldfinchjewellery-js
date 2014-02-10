@@ -1,5 +1,5 @@
 {
-  "test_page": "test/index.html",
+  "test_page": "test/tmp/index.html",
   "launch_in_dev": [
     "phantomjs"
   ],
