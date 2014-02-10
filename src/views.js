@@ -40,8 +40,9 @@ function renderNewsItems(newsItems) {
 
 function renderCategory(name, newsItems) {
   var template = '';
+  var className = name.toLowerCase().replace(/\s+/g, '-');
 
-  template += '<li class="news-category ' + name + '" id="news-' + name + '">';
+  template += '<li class="news-category ' + className + '" id="news-' + className + '">';
   template += '<h2 class="category-name">' + name + '</h2>';
   template += map(renderNewsItem, newsItems).join('');
   template += '</li>';

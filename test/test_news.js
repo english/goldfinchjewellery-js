@@ -9,11 +9,24 @@ describe('latest news', function() {
     ]);
 
     var response = {
-      newsItems: [
-        { body: 'I have a new stockist', category: 'stockists' },
-        { body: 'I won an award',        category: 'awards' },
-        { body: 'I won another award!',  category: 'awards' }
-      ]
+      newsItems: [{
+        body: 'I have a new stockist',
+        category: 'Stockists'
+      }, {
+        body: 'I won an award',
+        category: 'Awards'
+      }, {
+        body: 'I won another award!',
+        category: 'Awards'
+      }, {
+        body: "I will be attending a new event",
+        category: "Events and Exhibitions"
+      }, {
+        body: "I'm in the news" +
+              "[a link](http://google.com/)" +
+              "![an image](https://www.google.co.uk/images/srpr/logo11w.png)",
+        category: "Press"
+      }]
     };
 
     this.server.respondWith('GET', url, [
@@ -65,6 +78,8 @@ describe('latest news', function() {
       document.getElementById('news-stockists').innerText.should.include('I have a new stockist');
       document.getElementById('news-awards').innerText.should.include('I won an award');
       document.getElementById('news-awards').innerText.should.include('I won another award!');
+      document.getElementById("news-events-and-exhibitions").innerHTML.should.include("I will be attending a new event");
+      document.getElementById("news-press").innerHTML.should.include("I'm in the news");
     }, done);
   });
 });
