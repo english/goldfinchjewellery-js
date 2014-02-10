@@ -3,8 +3,11 @@ function first(arr) {
 }
 
 function each(handler, collection) {
-  for (var index = 0; index < collection.length; index++)
+  var length = collection.length;
+
+  for (var index = 0; index < length; index++) {
     handler(collection[index], index, collection);
+  }
 }
 
 function reduce(handler, collection, accumulator) {
