@@ -4,15 +4,15 @@ all: dist
 
 dist: dist/index.html dist/app.js dist/app.css
 
-dist/app.js: app.js fn.js
-	cat fn.js app.js > $@
+dist/app.js: src/app.js src/fn.js src/news.js
+	cat src/fn.js src/news.js src/app.js > $@
 
-dist/app.css: app.css
+dist/app.css: src/app.css
 	cp $< $@
 
-dist/index.html: index.html app.js app.css templates/*
+dist/index.html: src/index.html src/app.js src/app.css templates/*
 	rm -rf dist/*
-	cat index.html | $(SUB_TEMPLATES) | tidy -indent -quiet >$@
+	cat src/index.html | $(SUB_TEMPLATES) | tidy -indent -quiet >$@
 
 clean:
 	rm -rf dist/*

@@ -5,31 +5,22 @@ describe('latest news', function() {
     this.server = sinon.fakeServer.create();
 
     this.server.respondWith('OPTIONS', url, [
-      200,
-      { "Access-Control-Allow-Origin": "*" },
-      ''
+      200, { "Access-Control-Allow-Origin": "*" }, ''
     ]);
 
     var response = {
-      newsItems: [{
-        body: 'I have a new stockist',
-        category: 'stockists'
-      }, {
-        body: 'I won an award',
-        category: 'awards'
-      }, {
-        body: 'I won another award!',
-        category: 'awards'
-      }]
+      newsItems: [
+        { body: 'I have a new stockist', category: 'stockists' },
+        { body: 'I won an award',        category: 'awards' },
+        { body: 'I won another award!',  category: 'awards' }
+      ]
     };
 
     this.server.respondWith('GET', url, [
-      200,
-      {
+      200, {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*"
-      },
-      JSON.stringify(response)
+      }, JSON.stringify(response)
     ]);
   });
 

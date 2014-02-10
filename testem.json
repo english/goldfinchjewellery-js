@@ -4,10 +4,9 @@
     "phantomjs"
   ],
   "src_files": [
-    "index.html",
+    "src/*",
     "templates/*",
-    "test/*",
-    "app.js"
+    "test/*"
   ],
   "before_tests": "make test-files"
 }

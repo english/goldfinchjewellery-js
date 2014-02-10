@@ -1,5 +1,3 @@
-"use strict";
-
 describe('simple pages', function() {
   describe('about', function() {
     it('is shown by default', function() {
