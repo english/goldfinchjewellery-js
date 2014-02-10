@@ -24,6 +24,7 @@
 
     <div id="main" class="main-content"></div>
     <!-- TEMPLATES -->
+    <div style="clear: both;"></div>
     <script src="/test/tmp/app.js"></script>
     <link href="/test/mocha.css" media="all" rel="stylesheet" />
     <div id="mocha"></div>
@@ -31,6 +32,13 @@
     <script src="/test/mocha.js"></script>
     <script src="/test/chai.js"></script>
     <script src="/testem.js"></script>
-    <script src="/test/test.js"></script>
+    <script src="/test/test_helper.js"></script>
+    <script src="/test/test_functions.js"></script>
+    <script src="/test/test_app.js"></script>
+    <script src="/test/test_news.js"></script>
+    <script>
+      mocha.checkLeaks();
+      mocha.run();
+    </script>
   </body>
 </html>
