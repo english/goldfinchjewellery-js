@@ -1,7 +1,7 @@
 "use strict";
 
-window.rootElement = document.getElementById('main');
-window.routes = [
+window.ROOT_ELEMENT = document.getElementById('main');
+window.ROUTES = [
   'about',
   'latest-news',
   'contact',
@@ -44,7 +44,7 @@ function route(path) {
   function routeExists() {
     return !!find(function(route) {
       return path === route;
-    }, window.routes);
+    }, window.ROUTES);
   }
 
   function setTitle() {
@@ -68,7 +68,7 @@ function route(path) {
   }
 
   function setContent() {
-    window.rootElement.innerHTML = '';
+    window.ROOT_ELEMENT.innerHTML = '';
 
     if (path === 'latest-news') {
       renderNews();
@@ -78,7 +78,7 @@ function route(path) {
 
       removeClass([template], 'hidden');
 
-      window.rootElement.appendChild(template);
+      window.ROOT_ELEMENT.appendChild(template);
     }
   }
 
@@ -89,12 +89,12 @@ function route(path) {
       return link.getAttribute('href').replace('#', '') === leadingPath;
     }, menuLinks);
   }
-}
 
-function removeClass(elements, className) {
-  each(function(element) {
-    element.className = element.className.replace(className, '');
-  }, elements);
+  function removeClass(elements, className) {
+    each(function(element) {
+      element.className = element.className.replace(className, '');
+    }, elements);
+  }
 }
 
 setup();

@@ -6,7 +6,7 @@ function renderNews() {
 
     var json = JSON.parse(xhr.responseText);
 
-    window.rootElement.innerHTML = renderNewsItems(json.newsItems);
+    window.ROOT_ELEMENT.innerHTML = renderNewsItems(json.newsItems);
   };
 
   xhr.open('get', 'http://goldfinchjewellery.herokuapp.com/news.json', true);
