@@ -82,4 +82,10 @@ describe('latest news', function() {
       document.getElementById("news-press").innerHTML.should.include("I'm in the news");
     }, done);
   });
+
+  it('compiles the markdown body to html', function() {
+    var pressHTML = document.getElementById("news-press").innerHTML;
+    pressHTML.should.include('<a href="http://google.com/">a link</a>');
+    pressHTML.should.include('<img src="https://www.google.co.uk/images/srpr/logo11w.png">');
+  });
 });

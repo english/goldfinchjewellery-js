@@ -52,9 +52,10 @@ function renderCategory(name, newsItems) {
 
 function renderNewsItem(newsItem) {
   var template = '';
+  var body = markdown(newsItem.body);
 
   template += '<article class="news-item">';
-  template += '<div class="content">' + newsItem.body + '</article>';
+  template += '<div class="content">' + body + '</article>';
   template += '</article>';
 
   return template;
