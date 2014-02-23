@@ -1,5 +1,5 @@
-function markdown(md) {
-  return replaceLink(replaceImage(md));
+function markdown(source) {
+  return replaceLink(replaceImage(source));
 
   function replaceImage(input) {
     var regex = /!\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g;
