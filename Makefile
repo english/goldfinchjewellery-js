@@ -30,6 +30,9 @@ test/tmp/app.js: dist/app.js
 server:
 	cd dist && python -m SimpleHTTPServer
 
+api:
+	node api.js
+
 test:
 	testem
 
