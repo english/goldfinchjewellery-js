@@ -4,11 +4,10 @@ News = {
 
     xhr.onreadystatechange = function() {
       if (xhr.readyState !== 4) return;
-      callback(JSON.parse(xhr.responseText).newsItems);
+      callback(JSON.parse(xhr.responseText).news);
     };
 
     xhr.open('get', 'http://goldfinchjewellery.herokuapp.com/news.json', true);
-    // xhr.open('get', 'http://localhost:3001/news.json', true);
     xhr.send();
   }
 };

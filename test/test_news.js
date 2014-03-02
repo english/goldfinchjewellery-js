@@ -9,22 +9,22 @@ describe('latest news', function() {
     ]);
 
     var response = {
-      newsItems: [{
-        body: 'I have a new stockist',
+      news: [{
+        html: '<p>I have a new stockist</p>',
         category: 'Stockists'
       }, {
-        body: 'I won an award',
+        html: 'I won an award',
         category: 'Awards'
       }, {
-        body: 'I won another award!',
+        html: 'I won another award!',
         category: 'Awards'
       }, {
-        body: "I will be attending a new event",
-        category: "Events and Exhibitions"
+        html: "I will be attending a new event",
+        category: "Events & Exhibitions"
       }, {
-        body: "I'm in the news" +
-              "[a link](http://google.com/)" +
-              "![an image](https://www.google.co.uk/images/srpr/logo11w.png)",
+        html: "I'm in the news!" +
+              '<a href="http://google.com/">a link</a>' +
+              '<img src="https://www.google.co.uk/images/srpr/logo11w.png">',
         category: "Press"
       }]
     };

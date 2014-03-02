@@ -31,7 +31,7 @@ function renderNewsItems(newsItems) {
 
 function renderCategory(name, newsItems) {
   var template = '';
-  var className = name.toLowerCase().replace(/\s+/g, '-');
+  var className = name.toLowerCase().replace(/\s+/g, '-').replace('&', 'and');
 
   template += '<li class="news-category ' + className + '" id="news-' + className + '">';
   template += '<h2 class="category-name">' + name + '</h2>';
@@ -43,10 +43,9 @@ function renderCategory(name, newsItems) {
 
 function renderNewsItem(newsItem) {
   var template = '';
-  var body = markdown(newsItem.body);
 
   template += '<article class="news-item">';
-  template += '<div class="content">' + body + '</article>';
+  template += '<div class="content">' + newsItem.html + '</article>';
   template += '</article>';
 
   return template;
