@@ -7,7 +7,7 @@ News = {
       callback(JSON.parse(xhr.responseText).news);
     };
 
-    xhr.open('get', 'http://goldfinchjewellery.herokuapp.com/news.json', true);
+    xhr.open('get', 'https://goldfinchjewellery.herokuapp.com/news.json', true);
     xhr.send();
   }
 };

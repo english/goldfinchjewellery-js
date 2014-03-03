@@ -1,6 +1,6 @@
 describe('latest news', function() {
   beforeEach(function() {
-    var url = 'http://goldfinchjewellery.herokuapp.com/news.json';
+    var url = 'https://goldfinchjewellery.herokuapp.com/news.json';
 
     this.server = sinon.fakeServer.create();
 
