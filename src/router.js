@@ -2,8 +2,14 @@ Router = {
   current: null,
   routes: {},
 
-  register: function(path, view) {
-    Router.routes[path] = view || simpleView(path);
+  register: function(path, options) {
+    var view;
+    options = options || {};
+
+    Router.routes[path] = {
+      view: options.view || simpleView(path),
+      model: options.model
+    };
   },
 
   isRouteRegistered: function(path) {
@@ -12,19 +18,25 @@ Router = {
 
   route: function(path) {
     if (Router.isRouteRegistered(path)) {
-      applicationView(path)
-      Router.routes[path]();
+      applicationView(path);
+
+      var currentRoute = Router.routes[path];
+      var model = currentRoute.model;
+      var view = currentRoute.view;
+
+      if (model) model(view);
+      else view();
     } else {
       window.location.hash = 'about';
     }
   }
 };
 
-Router.register("about");
-Router.register("latest-news", newsView);
-Router.register("contact");
-Router.register("links");
-Router.register("gallery");
+Router.register('about');
+Router.register('latest-news', { view: newsView, model: News.find });
+Router.register('contact');
+Router.register('links');
+Router.register('gallery');
 Router.register('gallery/peace-doves');
 Router.register('gallery/weather');
 Router.register('gallery/birds');

@@ -48,12 +48,9 @@ function simpleView(path) {
   }
 }
 
-function newsView() {
+function newsView(newsItems) {
   var element = document.getElementById('main');
-
-  News.find(function(newsItems) {
-    element.innerHTML = renderNewsItems(newsItems);
-  });
+  element.innerHTML = renderNewsItems(newsItems);
 }
 
 function renderNewsItems(newsItems) {
