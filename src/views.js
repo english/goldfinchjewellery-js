@@ -1,15 +1,58 @@
+function applicationView(path) {
+  var leadingPath = first(path.split('/'));
+
+  setTitle();
+  setTitleImage();
+  setCurrentMenuItem();
+
+  function setTitle() {
+    var prefix = menuLink().innerText;
+    var suffix = 'Lucy Ramsbottom, Jewellery Designer Maker';
+
+    document.title = [prefix, suffix].join(' - ');
+  }
+
+  function setTitleImage() {
+    var imageUrl = 'https://s3-eu-west-1.amazonaws.com/goldfinchjewellery/' + leadingPath + '.jpg';
+
+    document.getElementById('title-image').src = imageUrl;
+  }
+
+  function setCurrentMenuItem() {
+    removeClass(document.querySelectorAll('#menu .current'), 'current');
+
+    var menuItem = menuLink().parentNode;
+    menuItem.className += ' current';
+  }
+
+  function menuLink() {
+    var menuLinks = document.querySelectorAll('#menu a');
+
+    return find(function(link) {
+      return link.getAttribute('href').replace('#', '') === leadingPath;
+    }, menuLinks);
+  }
+}
+
 function simpleView(path) {
-  var templateId = path + '-template';
-  var template = document.getElementById(templateId).cloneNode(true);
+  var element = document.getElementById('main');
 
-  removeClass([template], 'hidden');
+  return function() {
+    var templateId = path + '-template';
+    var template = document.getElementById(templateId).cloneNode(true);
 
-  window.ROOT_ELEMENT.appendChild(template);
+    removeClass([template], 'hidden');
+
+    element.innerHTML = '';
+    element.appendChild(template);
+  }
 }
 
 function newsView() {
+  var element = document.getElementById('main');
+
   News.find(function(newsItems) {
-    window.ROOT_ELEMENT.innerHTML = renderNewsItems(newsItems);
+    element.innerHTML = renderNewsItems(newsItems);
   });
 }
 

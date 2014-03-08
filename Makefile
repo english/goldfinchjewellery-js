@@ -4,8 +4,8 @@ all: dist
 
 dist: dist/index.html dist/app.js dist/app.css
 
-dist/app.js: src/app.js src/fn.js src/models.js src/views.js
-	cat src/fn.js src/models.js src/views.js src/app.js > $@
+dist/app.js: src/fn.js src/models.js src/views.js src/router.js src/app.js
+	cat src/fn.js src/models.js src/views.js src/router.js src/app.js > $@
 
 dist/app.css: src/app.css
 	cp $< $@
@@ -36,7 +36,7 @@ api:
 test:
 	testem
 
-deploy:
+deploy: dist/index.html dist/app.css dist/app.js
 	curl -T dist/index.html ftp://$(USER):$(PASSWORD)@goldfinchjewellery.co.uk/web/index.html
 	curl -T dist/app.css ftp://$(USER):$(PASSWORD)@goldfinchjewellery.co.uk/web/app.css
 	curl -T dist/app.js ftp://$(USER):$(PASSWORD)@goldfinchjewellery.co.uk/web/app.js
