@@ -90,3 +90,19 @@ function renderNewsItem(newsItem) {
 
   return template;
 }
+
+function galleryShowView(jewellery) {
+  var template = '<ul class="gallery gallery-items">';
+
+  each(function(jewelleryItem) {
+    template += '<li class="jewellery-piece">';
+    template += '<p>' + jewelleryItem.description + '</p>';
+    template += '<img src="' + jewelleryItem.image_path + '">';
+    template += '</li>';
+  }, jewellery);
+
+  template += '<p><a href="#gallery">Back to gallery</a>';
+  template += '</ul>';
+
+  document.getElementById('main').innerHTML = template;
+}

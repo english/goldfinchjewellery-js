@@ -37,9 +37,45 @@ Router.register('latest-news', { view: newsView, model: News.find });
 Router.register('contact');
 Router.register('links');
 Router.register('gallery');
-Router.register('gallery/peace-doves');
-Router.register('gallery/weather');
-Router.register('gallery/birds');
-Router.register('gallery/commissions');
-Router.register('gallery/branches');
-Router.register('gallery/woodlands');
+
+Router.register('gallery/peace-doves', {
+  view: galleryShowView,
+  model: function(callback) {
+    Gallery.find('peace-doves', callback);
+  }
+});
+
+Router.register('gallery/weather', {
+  view: galleryShowView,
+  model: function(callback) {
+    Gallery.find('weather', callback);
+  }
+});
+
+Router.register('gallery/birds', {
+  view: galleryShowView,
+  model: function(callback) {
+    Gallery.find('birds', callback);
+  }
+});
+
+Router.register('gallery/commissions', {
+  view: galleryShowView,
+  model: function(callback) {
+    Gallery.find('commissions', callback);
+  }
+});
+
+Router.register('gallery/branches', {
+  view: galleryShowView,
+  model: function(callback) {
+    Gallery.find('branches', callback);
+  }
+});
+
+Router.register('gallery/woodlands', {
+  view: galleryShowView,
+  model: function(callback) {
+    Gallery.find('woodlands', callback);
+  }
+});
